@@ -1,0 +1,9 @@
+{
+	"name": "cryptoreportingadf",
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "717f8876-7cbf-45cb-a490-432f8623204e",
+		"tenantId": "36a931d5-8feb-4f0b-a96b-912f28988dbd"
+	}
+}

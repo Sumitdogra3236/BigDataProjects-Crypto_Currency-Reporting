@@ -1,0 +1,133 @@
+{
+	"name": "crypto_get_bronze_metadat_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "crypto_reporting_sink_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "landing",
+				"fileSystem": "cryptoreporting"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"symbol": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"image": {
+					"type": "string"
+				},
+				"current_price": {
+					"type": "number"
+				},
+				"market_cap": {
+					"type": "integer"
+				},
+				"market_cap_rank": {
+					"type": "integer"
+				},
+				"fully_diluted_valuation": {
+					"type": "integer"
+				},
+				"total_volume": {
+					"type": "integer"
+				},
+				"high_24h": {
+					"type": "number"
+				},
+				"low_24h": {
+					"type": "number"
+				},
+				"price_change_24h": {
+					"type": "number"
+				},
+				"price_change_percentage_24h": {
+					"type": "number"
+				},
+				"market_cap_change_24h": {
+					"type": "number"
+				},
+				"market_cap_change_percentage_24h": {
+					"type": "number"
+				},
+				"circulating_supply": {
+					"type": "number"
+				},
+				"total_supply": {
+					"type": "number"
+				},
+				"max_supply": {
+					"type": "number"
+				},
+				"ath": {
+					"type": "number"
+				},
+				"ath_change_percentage": {
+					"type": "number"
+				},
+				"ath_date": {
+					"type": "string"
+				},
+				"atl": {
+					"type": "number"
+				},
+				"atl_change_percentage": {
+					"type": "number"
+				},
+				"atl_date": {
+					"type": "string"
+				},
+				"roi": {
+					"type": "object",
+					"properties": {
+						"times": {
+							"type": "number"
+						},
+						"currency": {
+							"type": "string"
+						},
+						"percentage": {
+							"type": "number"
+						}
+					}
+				},
+				"last_updated": {
+					"type": "string"
+				},
+				"sparkline_in_7d": {
+					"type": "object",
+					"properties": {
+						"price": {
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
+					}
+				},
+				"price_change_percentage_1h_in_currency": {
+					"type": "number"
+				},
+				"price_change_percentage_24h_in_currency": {
+					"type": "number"
+				},
+				"price_change_percentage_7d_in_currency": {
+					"type": "number"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

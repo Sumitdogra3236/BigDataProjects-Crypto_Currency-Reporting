@@ -1,0 +1,25 @@
+{
+	"name": "crypto_reporting_silver_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "crypto_report_silver_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 30,
+				"startTime": "2025-07-27T21:57:00",
+				"endTime": "2025-07-30T21:57:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

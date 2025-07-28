@@ -1,0 +1,24 @@
+{
+	"name": "crypto_reporting_bronze_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "crypto_report_bronze_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2025-07-27T18:09:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

@@ -1,0 +1,144 @@
+{
+	"name": "crypto_report_silver_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetBronzeMetadata",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "crypto_get_bronze_metadat_ds",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEachMetadata",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetBronzeMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetBronzeMetadata').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "silver_nb",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/sumitdograwork_outlook.com#ext#@sumitdograworkoutlook.onmicrosoft.com/crypto_landing_curated",
+								"baseParameters": {
+									"file_tm": {
+										"value": "@item().name",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "crypto_reporting_adb_ws_ls",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "NotifySuccessEmail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ForEachMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-01.westus2.logic.azure.com:443/workflows/ee5b49e9d99c4d4bb4f8e882194fa030/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=TEPNGIn12IPTZp93nRPlwrTuHmAF0VybxAZ1d86cPJg",
+					"body": {
+						"value": "{\"status\":\"succeed\",\"pipelineName\":\"@{pipeline().Pipeline}\",\"runId\":\"@{pipeline().RunId}\",\"runStart\":\"@{pipeline().TriggerTime}\",\"runEnd\":\"@{utcNow()}\"}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "NotifyfailedEmail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ForEachMetadata",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-01.westus2.logic.azure.com:443/workflows/ee5b49e9d99c4d4bb4f8e882194fa030/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=TEPNGIn12IPTZp93nRPlwrTuHmAF0VybxAZ1d86cPJg",
+					"body": {
+						"value": "{\"status\":\"Failed\",\"pipelineName\":\"@{pipeline().Pipeline}\",\"runId\":\"@{pipeline().RunId}\",\"runStart\":\"@{pipeline().TriggerTime}\",\"runEnd\":\"@{utcNow()}\"}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-07-28T05:57:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

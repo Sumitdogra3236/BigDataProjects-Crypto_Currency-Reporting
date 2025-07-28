@@ -1,0 +1,11 @@
+{
+	"name": "crypto_reporting_sink_ls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://cryptoreportingadlssa.dfs.core.windows.net/"
+		}
+	}
+}
